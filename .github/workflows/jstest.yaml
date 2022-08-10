@@ -1,26 +1,27 @@
-name: Node.js TEST
+name: Node CI
 
 on: [push]
 
 jobs:
-  build:
-
+  build_and_test:
     runs-on: ubuntu-latest
-
     steps:
-      - uses: actions/checkout@v3
-      - name: Use Node.js
-        uses: actions/setup-node@v3
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: npm install, build, and test
+        run: |
+          npm install
+          npm run build --if-present
+          npm test
+      - name: Archive production artifacts
+        uses: actions/upload-artifact@v3
         with:
-          node-version: '12.x'
-      - run: npm ci
-      - run: npm run build --if-present
-      - run: npm test
-      - uses: actions/checkout@v3
-      - name: Use Node.js
-        uses: actions/setup-node@v3
+          name: dist-without-markdown
+          path: |
+            dist
+            !dist/**/*.md
+      - name: Archive code coverage results
+        uses: actions/upload-artifact@v3
         with:
-          node-version: '12.x'
-      - run: npm install
-      - run: npm run build --if-present
-      - run: npm test
+          name: code-coverage-report
+          path: output/test/code-coverage.html
