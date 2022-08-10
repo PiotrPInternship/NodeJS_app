@@ -1,91 +1,30 @@
-name: Main workflow
+name: build # Name Action Build
 
-on:
-  pull_request:
-  push:
-    branches:
-      - main
-      - releases/*
+on: [push]  # Trigger on push
 
 jobs:
-  build:
-    runs-on: ${{ matrix.operating-system }}
-    strategy:
-      matrix:
-        operating-system: [ubuntu-latest, windows-latest, macOS-latest]
+  run:
+    runs-on: ubuntu-latest                         # Run on Ubuntu Docker image
     steps:
-    - name: Checkout
-      uses: actions/checkout@v2
-    - name: Set Node.js 12
+    - name: Checkout Repo                          # Checkout repo
+      uses: actions/checkout@v1
+    - name: Use Node.js                            # Configure Node.js
       uses: actions/setup-node@v1
       with:
-        version: 12.x
-    - run: npm ci
-    - run: npm run build
-    - run: npm run format-check
-    - run: npm test
-    - name: Verify no unstaged changes
-      if: runner.os != 'windows'
-      run: __tests__/verify-no-unstaged-changes.sh
-
-  test:
-    runs-on: ${{ matrix.operating-system }}
-    strategy:
-      matrix:
-        operating-system: [ubuntu-latest, windows-latest, macOS-latest]
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Clear tool cache
-        run: mv "${{ runner.tool_cache }}" "${{ runner.tool_cache }}.old"
-      - name: Setup dotnet 3.0.100
-        uses: ./
-        with:
-          dotnet-version: 3.0.100
-      - name: Verify dotnet
-        if: runner.os != 'windows'
-        run: __tests__/verify-dotnet.sh 3.0.100
-      - name: Verify dotnet (Windows)
-        if: runner.os == 'windows'
-        run: __tests__/verify-dotnet.ps1 3.0.100
-
-  test-proxy:
-    runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/dotnet/core/runtime-deps:3.0-bionic
-      options: --dns 127.0.0.1
-    services:
-      squid-proxy:
-        image: datadog/squid:latest
-        ports:
-          - 3128:3128
-    env:
-      https_proxy: http://squid-proxy:3128
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Clear tool cache
-        run: rm -rf $RUNNER_TOOL_CACHE/*
-      - name: Setup dotnet 3.0.100
-        uses: ./
-        with:
-          dotnet-version: 3.0.100
-      - name: Verify dotnet
-        run: __tests__/verify-dotnet.sh 3.0.100
-
-  test-bypass-proxy:
-    runs-on: ubuntu-latest
-    env:
-      https_proxy: http://no-such-proxy:3128
-      no_proxy: github.com,dotnetcli.blob.core.windows.net,download.visualstudio.microsoft.com,api.nuget.org
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Clear tool cache
-        run: mv "${{ runner.tool_cache }}" "${{ runner.tool_cache }}.old"
-      - name: Setup dotnet 3.0.100
-        uses: ./
-        with:
-          dotnet-version: 3.0.100
-      - name: Verify dotnet
-        run: __tests__/verify-dotnet.sh 3.0.100
+        node-version: '12.9'                       # Set Node.js Version
+        registry-url: 'https://registry.npmjs.org' # Set Node.js reigistry
+    - name: Deploy Info                            # Print GitHub Deploy info
+      env:
+        GITHUB_CONTEXT: ${{ toJson(github) }}
+      run: echo "$GITHUB_CONTEXT"
+    - name: Install                                # Install dependancies
+      run: npm install
+    - name: Build                                  # Build app if needed
+      run: npm run build --if-present
+    - name: Test
+      run: npm run test --if-present               # Run tests if needed
+    - name: Publish
+      if: startsWith(github.ref, 'refs/tags/v')    # Check if publish step should run
+      run: npm publish --access public             # Publish package
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }} # Set NPM auth token from GitHub Secrets
