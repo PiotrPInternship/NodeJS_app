@@ -19,8 +19,12 @@ jobs:
           node-version: '12.x'
       - run: npm ci
       - run: mkdir build
-      - name: Upload files
-        uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v3
         with:
-          name: test
-          path: /build
+          name: my-artifact
+          path: |
+            bin/
+            routes/
+            app.js
+            package.json
+            package-lock.json
