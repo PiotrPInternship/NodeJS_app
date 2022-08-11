@@ -20,20 +20,15 @@ steps:
   inputs:
     testResultsFormat: 'JUnit'
     testResultsFiles: '*.trx'
+
 - task: CopyFiles@2
-  displayName: 'Copy Files to: $(Build.ArtifactStagingDirectory)'
   inputs:
     SourceFolder: '$(Build.SourcesDirectory)'
-    Contents: |
-      bin/
-      routes/
-      app.js
-      package.json
-      package-lock.json
-      node_modules
-    TargetFolder: './npm'
+    Contents: '**'
+    TargetFolder: './app''
+
 - task: PublishPipelineArtifact@1
   inputs:
-    targetPath: './npm'
-    artifactName: npm
-  displayName: 'Publish npm artifact'
+    targetPath: './app'
+    artifactName: app
+  displayName: 'Publish app artifact'
