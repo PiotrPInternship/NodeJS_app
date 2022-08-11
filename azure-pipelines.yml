@@ -25,12 +25,12 @@ steps:
   inputs:
     SourceFolder: '$(Build.SourcesDirectory)'
     Contents: |
-      ./bin/**
-      ./routes/**
+      **/bin/**
+      **/routes/**
       app.js
       package.json
       package-lock.json
-      ./node_modules/**
+      **/node_modules/**
     TargetFolder: './npm'
 
 # - task: CopyFiles@2
