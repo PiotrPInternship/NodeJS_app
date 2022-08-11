@@ -16,10 +16,10 @@ steps:
 - script: |
     npm test
   displayName: 'npm test'
-- task: PublishTestResults@2
-  inputs:
-    testResultsFormat: 'JUnit'
-    # testResultsFiles: '*.trx'
+# - task: PublishTestResults@2
+#   inputs:
+#     testResultsFormat: 'JUnit'
+#     testResultsFiles: '*.trx'
 - task: CopyFiles@2
   displayName: 'Copy Files to: $(Build.ArtifactStagingDirectory)'
   inputs:
