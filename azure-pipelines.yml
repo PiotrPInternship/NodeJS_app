@@ -21,7 +21,7 @@ steps:
 - task: CopyFiles@2
   inputs:
     sourceFolder: '.'
-    contents: './bin' 
+    contents: '**/bin' 
     targetFolder: ./npm
   displayName: 'Copy bin/'
 
@@ -35,7 +35,7 @@ steps:
 - task: CopyFiles@2
   inputs:
     sourceFolder: '.'
-    contents: './routes' 
+    contents: '**/routes' 
     targetFolder: ./npm
   displayName: 'Copy routes/'   
 
@@ -56,7 +56,7 @@ steps:
 - task: CopyFiles@2
   inputs:
     sourceFolder: '.'
-    contents: './node_modules' 
+    contents: '**/node_modules' 
     targetFolder: ./npm
   displayName: 'node_modules'   
 - task: PublishPipelineArtifact@1
