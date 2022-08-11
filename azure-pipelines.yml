@@ -13,10 +13,13 @@ steps:
 - script: |
     npm ci
   displayName: 'npm ci'
-# - task: PublishTestResults@2
-#   inputs:
-#     testResultsFormat: 'JUnit'
-#     testResultsFiles: '**/TEST-*.xml'
+- script: |
+    npm test
+  displayName: 'npm test'
+- task: PublishTestResults@2
+  inputs:
+    testResultsFormat: 'JUnit'
+    testResultsFiles: '**/TEST-*.xml'
 
 - task: CopyFiles@2
   inputs:
