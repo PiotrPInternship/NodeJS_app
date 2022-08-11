@@ -20,48 +20,18 @@ steps:
   inputs:
     testResultsFormat: 'JUnit'
     testResultsFiles: '*.trx'
-
 - task: CopyFiles@2
+  displayName: 'Copy Files to: $(Build.ArtifactStagingDirectory)'
   inputs:
-    sourceFolder: '$(Build.SourcesDirectory)'
-    contents: '**\bin' 
-    targetFolder: ./npm
-  displayName: 'Copy bin/'
-
-- task: CopyFiles@2
-  inputs:
-    sourceFolder: '$(Build.SourcesDirectory)'
-    contents: 'package.json' 
-    targetFolder: ./npm
-  displayName: 'Copy package.json'   
-
-- task: CopyFiles@2
-  inputs:
-    sourceFolder: '$(Build.SourcesDirectory)'
-    contents: '**\routes' 
-    targetFolder: ./npm
-  displayName: 'Copy routes/'   
-
-- task: CopyFiles@2
-  inputs:
-    sourceFolder: '$(Build.SourcesDirectory)'
-    contents: 'app.js' 
-    targetFolder: ./npm
-  displayName: 'Copy app.js'   
-
-- task: CopyFiles@2
-  inputs:
-    sourceFolder: '$(Build.SourcesDirectory)'
-    contents: 'package-lock.json' 
-    targetFolder: ./npm
-  displayName: 'Copy package-lock.json'   
-
-- task: CopyFiles@2
-  inputs:
-    sourceFolder: '$(Agent.BuildDirectory)'
-    contents: '/node_modules/**' 
-    targetFolder: ./npm
-  displayName: 'node_modules'   
+    SourceFolder: '$(Build.SourcesDirectory)'
+    Contents: |
+      bin/
+      routes/
+      app.js
+      package.json
+      package-lock.json
+      node_modules
+    TargetFolder: './npm'
 - task: PublishPipelineArtifact@1
   inputs:
     targetPath: './npm'
