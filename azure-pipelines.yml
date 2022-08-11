@@ -20,9 +20,9 @@ steps:
 - task: CopyFiles@2
   inputs:
     sourceFolder: '$(Build.SourcesDirectory)'
-    contents: '*.tgz' 
+    contents: 'bin/' 
     targetFolder: $(Build.ArtifactStagingDirectory)/npm
-  displayName: 'Copy npm package'
+  displayName: 'Copy bin/'
 
 - task: CopyFiles@2
   inputs:
@@ -31,6 +31,33 @@ steps:
     targetFolder: $(Build.ArtifactStagingDirectory)/npm
   displayName: 'Copy package.json'   
 
+- task: CopyFiles@2
+  inputs:
+    sourceFolder: '$(Build.SourcesDirectory)'
+    contents: 'routes/' 
+    targetFolder: $(Build.ArtifactStagingDirectory)/npm
+  displayName: 'Copy routes/'   
+
+- task: CopyFiles@2
+  inputs:
+    sourceFolder: '$(Build.SourcesDirectory)'
+    contents: 'app.js' 
+    targetFolder: $(Build.ArtifactStagingDirectory)/npm
+  displayName: 'Copy app.js'   
+
+- task: CopyFiles@2
+  inputs:
+    sourceFolder: '$(Build.SourcesDirectory)'
+    contents: 'package-lock.json' 
+    targetFolder: $(Build.ArtifactStagingDirectory)/npm
+  displayName: 'Copy package-lock.json'   
+
+- task: CopyFiles@2
+  inputs:
+    sourceFolder: '$(Build.SourcesDirectory)'
+    contents: 'node_modules' 
+    targetFolder: $(Build.ArtifactStagingDirectory)/npm
+  displayName: 'node_modules'   
 - task: PublishPipelineArtifact@1
   inputs:
     targetPath: '$(Build.ArtifactStagingDirectory)/npm'
