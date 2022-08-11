@@ -24,7 +24,7 @@ steps:
 - task: CopyFiles@2
   inputs:
     sourceFolder: '$(Build.SourcesDirectory)'
-    contents: '/bin/**' 
+    contents: '**\bin' 
     targetFolder: ./npm
   displayName: 'Copy bin/'
 
@@ -38,7 +38,7 @@ steps:
 - task: CopyFiles@2
   inputs:
     sourceFolder: '$(Build.SourcesDirectory)'
-    contents: 'routes/**' 
+    contents: '**\routes' 
     targetFolder: ./npm
   displayName: 'Copy routes/'   
 
