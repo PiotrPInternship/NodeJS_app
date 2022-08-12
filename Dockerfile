@@ -1,14 +1,15 @@
-# syntax=docker/dockerfile:1
+FROM node:16
 
-FROM node:12.18.1
-ENV NODE_ENV=production
+WORKDIR /usr/src/app
 
-WORKDIR /app
+COPY package*.json ./
 
-COPY ["package.json", "package-lock.json*", "./"]
+RUN npm install
+# If you are building your code for production
+# RUN npm ci --only=production
 
-RUN npm install --production
+# Bundle app source
+COPY . bin/ routes/ app.jspackage.json package-lock.json node_modules
 
-COPY . .
-
+EXPOSE 8080
 CMD [ "node", "server.js" ]
