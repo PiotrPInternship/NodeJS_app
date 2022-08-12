@@ -20,6 +20,6 @@ jobs:
       env:
         login: ${{ secrets.DOCKERHUBLOGIN }}
         password: ${{ secrets.DOCKERHUBPASSWD }}
-      run: docker login --username $login --password-stdin $password piter26133/nodejsapp_github
+      run: docker login --username $login --password-stdin $password
     - name: Push the Docker image
       run: docker push piter26133/nodejsapp_github:nodejsapp
