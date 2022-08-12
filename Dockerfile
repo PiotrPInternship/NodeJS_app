@@ -12,7 +12,6 @@ RUN npm ci
 # Bundle app source
 COPY . bin/
 COPY . routes/
-COPY . package-lock.json
 COPY . app.js
 COPY . node_modules/
 
