@@ -9,7 +9,7 @@ RUN npm ci
 # RUN npm ci --only=production
 
 # Bundle app source
-COPY . bin/ routes/ app.jspackage.json package-lock.json node_modules
+COPY . bin/ routes/ package-lock.json node_modules
 
 EXPOSE 8080
 CMD [ "node", "server.js" ]
