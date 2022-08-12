@@ -10,7 +10,7 @@ COPY bin/ ./
 COPY routes/ ./
 COPY app.js ./
 COPY package-lock.json ./
-COPY package*.json ./
+COPY package.json ./
 
 EXPOSE 8080
 CMD [ "node", "server.js" ]
