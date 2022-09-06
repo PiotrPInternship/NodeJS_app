@@ -6,8 +6,8 @@ COPY package*.json ./
 
 RUN npm ci
 
-COPY bin/ ./
-COPY routes/ ./
+COPY bin/ ./bin
+COPY routes/ ./routes
 COPY app.js ./
 COPY package-lock.json ./
 COPY package.json ./
